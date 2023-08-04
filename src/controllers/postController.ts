@@ -1,12 +1,18 @@
 import { Request, Response, request } from 'express'
+import fs from 'fs'
 import {post} from '../models/postSchema'
+import {user} from '../models/schemaUser'
+import { fileOptions } from '../middlewere/upload'
 
-export const createPost = async (request:Request, response:Response) =>{
-    const {userID, postTitle, postPhoto, PostLike, coments, likesCouter} = request.body
+export const createPost = async (request:any, response:Response) =>{
+    const {postTitle, postPhoto} = request.body
     try {
+        const usuario : any = await user.find({uid:request.userId})
+        const uploadPost = await fileOptions
         const createPostF = await post.create({
             postTitle,
             postPhoto,
+            userID:usuario[0]._id
         })
         return response.status(200).json(createPostF)
 
@@ -18,8 +24,9 @@ export const createPost = async (request:Request, response:Response) =>{
 }
 
 export const getPost = async (request:Request, response:Response) =>{
+        const {_id} = request.params
     try {
-        const getPostF = await post.find()
+        const getPostF = await post.find().populate('userID')
         return response.status(200).json(getPostF)
     } catch (error) {
         return response.status(200).json('nenhum post encontrado')
@@ -61,3 +68,4 @@ export const deletePost = async (request:Request, response:Response) =>{
         return response.status(401).json(error)
     }
 }
+

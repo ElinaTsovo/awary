@@ -10,22 +10,22 @@ const SchemaUser = new Schema(
 
     nameUser: {
       type: String,
-      required: true,
+      required: false,
       min: 4
     },
 
     emailUser: {
-      field: { 
         type: String, 
         required: false,
+        unique:true,
          min: 4
-         },
     },
 
-    passwordUser: {
+    city: {
       type:String,
-      required: true
+      required: false
     },
+
 
     photoprofileUser: {
       type: String,

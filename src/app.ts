@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
+import multer from "multer"
 import path  from 'path'
 import { connectionDB } from './connetion/bdConnetion'
 import {router} from './routers/router'
@@ -14,9 +15,6 @@ app.use(express.static(path.join(__dirname, 'medleware')))
 app.use('/api', router)
 
 connectionDB()
-
-
-
 
 const port = process.env.PORT || 5000
 

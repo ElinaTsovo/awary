@@ -3,24 +3,19 @@ import {post} from './postSchema'
 import { user } from "./schemaUser";
 
 const comentSchema= new Schema({
-    author:{
-        type:String,
-        required: false
-    },
-    
     userID: {
         type: Schema.Types.ObjectId,
-        ref: 'user',
-        required: false
+        ref: 'datauser',
+        required: true
     },
     comentt:{
         type:String,
         required: false
     },
 
-    postComent:{
+    postID:{
         type:Schema.Types.ObjectId,
-        required:false,
+        required:true,
         ref: 'post'
     },
 

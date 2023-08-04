@@ -1,21 +1,55 @@
 import { Request, Response, request } from 'express'
 import {coment} from '../models/comentSchema'
+import { user } from '../models/schemaUser'
 
-export const createComent= async (request:Request, response:Response) =>{
-    const {author,userID,comentt,postComent} = request.body
+export const createComent= async (request:any, response:Response) =>{
+    const {comentt,postID} = request.body
     try {
+        const usuario : any = await user.findOne({uid:request.userId})
         const createComentF = await coment.create({
-            comentt  
+            comentt ,
+            postID,
+            userID:usuario?._id
         })
-        return response.status(200).json(createComentF)
+       
+        return response.status(200).json('comentário criado com sucesso')
 
     } catch (error) {
         console.log(error)
         return response.status(401).json('erro, tente novamente')
         
     }
-   
 }
+
+export const getComent = async (request:Request, response:Response) =>{
+try {
+    const getComentF = await coment.find().populate('userID').populate('postID')
+    return response.status(200).json({getComentF, commentCount: getComentF.length})
+} catch (error) {
+    return response.status(200).json('nenhum post encontrado')
+}
+}
+
+export const getComentID = async (request:Request, response:Response) =>{
+    const {_id} = request.params
+    try {
+        const getComentIDF = await coment.findOne({_id}).populate('userID').populate('postID')
+        return response.status(200).json(getComentIDF)
+    } catch (error) {
+        return response.status(200).json('nenhum post encontrado')
+    }
+    }
+
+    export const getComentpostID = async (request:Request, response:Response) =>{
+        const {postID} = request.params
+        try {
+            const getComentF = await coment.find({postID}).populate('userID').populate('postID')
+            return response.status(200).json(getComentF)
+        } catch (error) {
+            return response.status(200).json('nenhum post encontrado')
+        }
+        }
+    
 
 
 export const updateComent = async (request:Request, response:Response) =>{

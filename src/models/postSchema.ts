@@ -1,10 +1,12 @@
 import { Schema, model } from "mongoose";
+import {coment} from './comentSchema'
+import {user} from './schemaUser'
 
 const postSchema = new Schema({
    userID:{
     type:Schema.Types.ObjectId,
-    ref: 'user',
-    required: false
+    ref: 'datauser',
+    required: true
   },
 
   postTitle: {
@@ -16,18 +18,6 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-
-  PostLike: [{
-    type:Schema.Types.ObjectId,
-    ref: 'user',
-    required:false
-  }],
-
-  coments:[{
-    type:Schema.Types.ObjectId,
-    ref: 'modellComent',
-    required:false
-  }],
 
   likesCouter:{
     type:Number,
